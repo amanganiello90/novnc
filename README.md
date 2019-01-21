@@ -5,6 +5,9 @@ This image is intended to run a small standalone server that can target either o
 [![](https://images.microbadger.com/badges/image/javanile/novnc.svg)](https://microbadger.com/images/javanile/novnc "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/javanile/novnc.svg)](https://microbadger.com/images/javanile/novnc "Get your own version badge on microbadger.com")
 
+## Run with ubuntu container and filebrowser service
+[here](https://github.com/novnc/noVNC/issues/169#issuecomment-443250680)
+
 ## Usage
 **STEP #1** Place NoVNC service into your docker-compose.yml file
 ```yml
