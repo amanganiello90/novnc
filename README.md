@@ -18,7 +18,8 @@ location /files/ {
 
 In this way I have a base linux image with transfer file and GUI.
 
-After, the new linux image must be extended with android-sdc and **built**, in order to use in a new docker-compose.
+After, the new linux image must be extended with android-sdk and **built**, in order to use in a new docker-compose.
+[example android-sdk image](https://github.com/thyrlian/AndroidSDK/blob/master/android-sdk/Dockerfile)
 
 ## Usage
 **STEP #1** Place NoVNC service into your docker-compose.yml file
