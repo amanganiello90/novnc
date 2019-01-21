@@ -6,7 +6,19 @@ This image is intended to run a small standalone server that can target either o
 [![](https://images.microbadger.com/badges/version/javanile/novnc.svg)](https://microbadger.com/images/javanile/novnc "Get your own version badge on microbadger.com")
 
 ## Run with ubuntu container and filebrowser service
-[here](https://github.com/novnc/noVNC/issues/169#issuecomment-443250680)
+I need to create a docker-compose.yml, that extends the base ubuntu-vnc replacing /etc/nginx/sites-enabled/default with (NO build):
+
+```
+location /files/ {
+    proxy_pass http://files/files/;
+}
+```
+
+[read issue here](https://github.com/novnc/noVNC/issues/169#issuecomment-443250680) .
+
+In this way I have a base linux image with transfer file and GUI.
+
+After, the new linux image must be extended with android-sdc and **built**, in order to use in a new docker-compose.
 
 ## Usage
 **STEP #1** Place NoVNC service into your docker-compose.yml file
