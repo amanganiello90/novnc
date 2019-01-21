@@ -1,6 +1,6 @@
-# javanile/novnc
+# ubuntu-gui-docker
 
-This image is intended to run a small standalone server that can target either other machines on the same network or other Docker containers.
+Docker compose apps to run ubuntu base (or android) image with visual NoVNC client remote connection. You can also upload/download files from container on your machine with fileBrowser service.
 
 [![](https://images.microbadger.com/badges/image/javanile/novnc.svg)](https://microbadger.com/images/javanile/novnc "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/javanile/novnc.svg)](https://microbadger.com/images/javanile/novnc "Get your own version badge on microbadger.com")
