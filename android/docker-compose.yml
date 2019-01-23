@@ -3,14 +3,14 @@ version: '2'
 services:
     vnc:
         hostname: vnc
-        build: .
-#        image: dorowu/ubuntu-desktop-lxde-vnc:latest
+#        build: .
+        image: dorowu/ubuntu-desktop-lxde-vnc:latest
         environment:
             USER: ${BASIC_USER}
 #            VNC_PASSWORD: ${BASIC_PASSWORD}
             HTTP_PASSWORD: ${BASIC_PASSWORD}
         ports:
-            - "${HTTP_PORT}:80"
+            - "${UBUNTU_CONTAINER_PORT}:80"
         volumes:
             - home:/home
         networks:
@@ -19,8 +19,8 @@ services:
         hostname: files
         image: filebrowser/filebrowser:v1.10.0
         # Uncoment for debug purposes
-        # ports:
-        #     - 6082:80
+        ports:
+            - ${FILE_BROWSER_PORT}:80
         command: --no-auth --baseurl=/files
         volumes:
             - home:/srv

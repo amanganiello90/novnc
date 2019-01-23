@@ -6,13 +6,6 @@ Docker compose apps to run ubuntu base (or android) image with visual NoVNC clie
 [![](https://images.microbadger.com/badges/version/javanile/novnc.svg)](https://microbadger.com/images/javanile/novnc "Get your own version badge on microbadger.com")
 
 ## Run with ubuntu container and filebrowser service
-I need to create a docker-compose.yml, that extends the base ubuntu-vnc replacing /etc/nginx/sites-enabled/default with (NO build):
-
-```
-location /files/ {
-    proxy_pass http://files/files/;
-}
-```
 
 [read issue here](https://github.com/novnc/noVNC/issues/169#issuecomment-443250680) .
 
@@ -22,49 +15,56 @@ After, the new linux image must be extended with android-sdk and **built**, in o
 [example android-sdk image](https://github.com/thyrlian/AndroidSDK/blob/master/android-sdk/Dockerfile)
 
 ## Usage
-**STEP #1** Place NoVNC service into your docker-compose.yml file
+**STEP #1** Run docker compose app, in _simple_ folder, with this yml:
 ```yml
 version: '2'
 
 services:
+    vnc:
+        hostname: vnc
+#        build: .
+        image: dorowu/ubuntu-desktop-lxde-vnc:latest
+        environment:
+            USER: ${BASIC_USER}
+#            VNC_PASSWORD: ${BASIC_PASSWORD}
+            HTTP_PASSWORD: ${BASIC_PASSWORD}
+        ports:
+            - "${UBUNTU_CONTAINER_PORT}:80"
+        volumes:
+            - home:/home
+        networks:
+            - default
+    files:
+        hostname: files
+        image: filebrowser/filebrowser:v1.10.0
+        # Uncoment for debug purposes
+        ports:
+            - ${FILE_BROWSER_PORT}:80
+        command: --no-auth --baseurl=/files
+        volumes:
+            - home:/srv
+        networks:
+            - default
 
-  novnc:
-    image: javanile/novnc
-    environment:
-      - REMOTE_HOST=localhost
-      - REMOTE_PORT=5900
-    ports:
-      - 8081:8081
-    links:
-      - selenium
+volumes:
+    home:
 
-  selenium:
-    image: selenium/standalone-chrome-debug:3.11.0-californium
-    environment:
-      - VNC_NO_PASSWORD=1
-      - SCREEN_WIDTH=1200
-      - SCREEN_HEIGHT=675
-    ports:
-      - 4444:4444
-      - 5900:5900
+networks:
+    default:
 ```
 **STEP #2** Run container with follow command
 ```bash
 docker-compose up -d
 ```
-**STEP #3** Now visit this http://localhost:8081 boom!
+**STEP #3** Now visit this http://localhost:UBUNTU_CONTAINER_PORT for ubuntu view, and http://localhost:FILE_BROWSER_PORT for fileBrowser app.
 
 ## Configuration
-Two environment variables exist in the docker file for configuration REMOTE_HOST and REMOTE_PORT.
+Environment variables exist in the docker file, defined in .env file, for configuration
 
 ### Variables
-- **REMOTE_HOST**: Host running a VNC Server to connect to - defaults to *localhost*
-- **REMOTE_PORT**: Port that the VNC Server is listening on - defaults to *5900*
+- **BASIC_USER**: the user for basic auth
+- **BASIC_PASSWORD**: the password for basic auth
+- **UBUNTU_CONTAINER_PORT**: Port that the Ubuntu VNC Server is listening on 
+- **FILE_BROWSER_PORT**: Port that the file browser is listening on 
 
-### Ports
-- **8081** is exposed by default.
 
-## Standalone usage
-```bash
-docker run -d -e REMOTE_HOST=192.168.86.135 -e REMOTE_PORT=5901 javanile/novnc
-```
